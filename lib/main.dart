@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:medecin_gsb/model/medecin.dart';
 import 'package:medecin_gsb/screen/home.dart';
+import 'package:medecin_gsb/screen/pays_departements.dart';
+import 'screen/medecins_departements.dart';
+import 'screen/profil.dart';
 
 
 void main() {
@@ -14,7 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: WelcomeScreen(),
+      routes: {
+        MedecinProfil.routeName: (context) => const MedecinProfil(),
+        PaysDepScreen.routeName: (context) => const PaysDepScreen(),
+        MedecinsDepScreen.routeName: (context) => const MedecinsDepScreen(),
+      },
     );
   }
 }
@@ -33,8 +41,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
     var jsonData = jsonDecode(response.body) as List;
     List<Medecin> medecins = [];
     for (var u in jsonData) {
-      Medecin medecin = Medecin(u['id'], u['prenom'], u['nom'], u['tel'], u['adresse']);
-      medecins.add(medecin);
+      medecins.add(Medecin.fromJson(u));
     }
     print(medecins.length);
     return medecins;

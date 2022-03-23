@@ -6,6 +6,8 @@ import 'package:medecin_gsb/model/medecin.dart';
 import 'package:medecin_gsb/model/pays.dart';
 import 'package:medecin_gsb/api/service.dart';
 
+import 'profil.dart';
+
 class MedecinSearchScreen extends StatefulWidget {
   const MedecinSearchScreen({Key? key}) : super(key: key);
 
@@ -16,7 +18,7 @@ class MedecinSearchScreen extends StatefulWidget {
 class _MedecinSearchScreenState extends State<MedecinSearchScreen> {
 
   TextEditingController editingController = TextEditingController();
-  var items = List<Medecin>.generate(1, (index) => Medecin(0, "---","---","---","--"));
+  var items = List<Medecin>.generate(1, (index) => Medecin(id: 0, prenom: "---", nom: "---", adresse: "---", tel: "---"));
   void filterSearchResults(String query) async {
     if(query.isNotEmpty) {
       var result = await Service().getMedecinByNom(query);
@@ -38,9 +40,9 @@ class _MedecinSearchScreenState extends State<MedecinSearchScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Recherche des médecins par nom :'),
-          leading: BackButton(
+         /* leading: BackButton(
               color: Colors.white
-          ), ),
+          ),*/ ),
         body: Container(
           child: Card(
             child: Column(
@@ -67,6 +69,9 @@ class _MedecinSearchScreenState extends State<MedecinSearchScreen> {
                               itemCount: items.length,
                               itemBuilder: (context, i) {
                                 return ListTile(
+                                  onTap: () {
+                                    Navigator.pushNamed(context,MedecinProfil.routeName, arguments: Service().getMedecinByID(items[i].id));
+                                  },
                                   title: Text(items[i].id.toString()+" "+items[i].nom),
                                   /* subtitle: Text(snapshot.data[i].prenom),
       trailing: Text(snapshot.data[i].nom),*/
